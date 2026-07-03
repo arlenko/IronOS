@@ -55,23 +55,23 @@
  * OLED Orientation
  *
  */
-#define ORIENTATION_MODE           2 // 0: Right 1:Left 2:Automatic - Default Automatic
-#define MAX_ORIENTATION_MODE       2 // Up to auto
+#define ORIENTATION_MODE           0 // 0: Right 1:Left 2:Automatic - Default Automatic
+#define MAX_ORIENTATION_MODE       1 // Up to auto
 #define REVERSE_BUTTON_TEMP_CHANGE 0 // 0:Default 1:Reverse - Reverse the plus and minus button assigment for temperature change
 
 /**
  * OLED Brightness
  *
  */
-#if defined(MODEL_TS101)
-  #define MIN_BRIGHTNESS     1   // Min OLED brightness selectable
-  #define MAX_BRIGHTNESS     101 // Max OLED brightness selectable
-#else
+// #if defined(MODEL_TS101)
+//   #define MIN_BRIGHTNESS     1   // Min OLED brightness selectable
+//   #define MAX_BRIGHTNESS     101 // Max OLED brightness selectable
+// #else
   #define MIN_BRIGHTNESS     0   // Min OLED brightness selectable
   #define MAX_BRIGHTNESS     100 // Max OLED brightness selectable
-#endif
+// #endif
 #define BRIGHTNESS_STEP    25  // OLED brightness increment
-#define DEFAULT_BRIGHTNESS 25  // default OLED brightness
+#define DEFAULT_BRIGHTNESS 50  // default OLED brightness
 
 /**
  * Temp change settings
@@ -99,7 +99,7 @@
  * OLED Orientation Sensitivity on Automatic mode!
  * Motion Sensitivity <0=Off 1=Least Sensitive 9=Most Sensitive>
  */
-#define SENSITIVITY 7 // Default 7
+#define SENSITIVITY 0 // Default 7
 
 /**
  * Detailed soldering screen
@@ -145,6 +145,7 @@
 #define NEEDS_VBUS_PROBE 0
 // Miniware is swapping IMU's around a bit now, so we turn them all on
 
+#define NO_ACCEL 1
 #define ACCEL_MMA
 #define ACCEL_LIS
 #define ACCEL_SC7
@@ -206,23 +207,23 @@
 
 #define TIP_HAS_DIRECT_PWM   1
 #define POW_DC               1
-#define POW_PD               1
-#define USB_PD_EPR_WATTAGE   140 /* EPR Supported */
-#define I2C_SOFT_BUS_2       1
+// #define POW_PD               1
+// #define USB_PD_EPR_WATTAGE   140 /* EPR Supported */
+// #define I2C_SOFT_BUS_2       1
 #define OLED_I2CBB1          1
-#define USB_PD_I2CBB2        1
-#define USB_PD_VMAX          28 // Device supposedly can do 28V; looks like vmax is 33 ish
+// #define USB_PD_I2CBB2        1
+#define USB_PD_VMAX          20
 #define OLED_128x32          1
 #define OLED_FLIP            1
-#define HAS_SPLIT_POWER_PATH 1
+// #define HAS_SPLIT_POWER_PATH 1
 #define TEMP_NTC             1
-#define ACCEL_I2CBB1         1
-#define POW_EPR              1
-#define TIP_TYPE_SUPPORT     1 // Support for tips of different types, i.e. resistance
-#define AUTO_TIP_SELECTION   1 // Can auto-select the tip
-#define TIPTYPE_T12          1 // Can manually pick a T12 tip
-#define HAS_POWER_DEBUG_MENU
-#define DEBUG_POWER_MENU_BUTTON_B
+// #define ACCEL_I2CBB1         1
+// #define POW_EPR              1
+// #define TIP_TYPE_SUPPORT     1 // Support for tips of different types, i.e. resistance
+// #define AUTO_TIP_SELECTION   1 // Can auto-select the tip
+// #define TIPTYPE_T12          1 // Can manually pick a T12 tip
+// #define HAS_POWER_DEBUG_MENU
+// #define DEBUG_POWER_MENU_BUTTON_B
 
 #endif /* TS101 */
 
@@ -281,18 +282,18 @@
 #define SC7_ORI_FLIP
 #endif /* TS80P */
 
-#ifdef MODEL_TS101
+// #ifdef MODEL_TS101
 // For whatever reason, Miniware decided to not build a reliable DFU bootloader
 // It can't appear to flash to some of the upper pages of flash,
 // I'm slightly suspect a watchdog or something runs out
 // as device resets before file finishes copying
 // So logo has to be located on page 99 or else it cant be flashed on stock bootloader
-#define FLASH_LOGOADDR      (0x08000000 + (99 * 1024))
-#define SETTINGS_START_PAGE (0x08000000 + (127 * 1024))
-#else
+// #define FLASH_LOGOADDR      (0x08000000 + (99 * 1024))
+// #define SETTINGS_START_PAGE (0x08000000 + (127 * 1024))
+// #else
 #define FLASH_LOGOADDR      (0x08000000 + (62 * 1024))
 #define SETTINGS_START_PAGE (0x08000000 + (63 * 1024))
-#define OLED_96x16          1
-#endif /* TS101 */
+// #define OLED_96x16          1
+// #endif /* TS101 */
 
 #endif /* CONFIGURATION_H_ */
