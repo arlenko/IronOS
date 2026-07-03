@@ -27,7 +27,8 @@ bool getIsPoweredByDCIN() {
 #endif
 #ifdef MODEL_TS101
   // TODO have to check what we are using
-  return HAL_GPIO_ReadPin(DC_SELECT_GPIO_Port, DC_SELECT_Pin) == GPIO_PIN_SET;
+  // return HAL_GPIO_ReadPin(DC_SELECT_GPIO_Port, DC_SELECT_Pin) == GPIO_PIN_SET;
+  return true;
 #endif
 #ifdef MODEL_TS100
   return true;
