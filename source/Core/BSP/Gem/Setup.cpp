@@ -437,7 +437,9 @@ static void MX_GPIO_Init(void) {
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  #ifdef OLED_RESET_Pin
   HAL_GPIO_WritePin(OLED_RESET_GPIO_Port, OLED_RESET_Pin, GPIO_PIN_RESET);
+  #endif
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   /*Configure GPIO pins : PD0 PD1 */
   GPIO_InitStruct.Pin  = GPIO_PIN_0 | GPIO_PIN_1;
@@ -491,6 +493,7 @@ static void MX_GPIO_Init(void) {
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(KEY_B_GPIO_Port, &GPIO_InitStruct);
 
+#ifdef OLED_RESET_Pin
   /*Configure GPIO pin : OLED_RESET_Pin */
   GPIO_InitStruct.Pin   = OLED_RESET_Pin;
   GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
@@ -501,6 +504,7 @@ static void MX_GPIO_Init(void) {
   HAL_GPIO_WritePin(OLED_RESET_GPIO_Port, OLED_RESET_Pin, GPIO_PIN_RESET);
   HAL_Delay(30);
   HAL_GPIO_WritePin(OLED_RESET_GPIO_Port, OLED_RESET_Pin, GPIO_PIN_SET);
+#endif
 
 #ifdef DC_SELECT_Pin
   GPIO_InitStruct.Pin  = DC_SELECT_Pin;
