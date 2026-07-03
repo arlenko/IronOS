@@ -1,5 +1,5 @@
 ifndef model
-model:=Pinecilv2
+model:=Gem
 endif
 
 ALL_MINIWARE_MODELS=TS100 TS80 TS80P TS101
@@ -7,7 +7,8 @@ ALL_PINECIL_MODELS=Pinecil
 ALL_PINECIL_V2_MODELS=Pinecilv2
 ALL_MHP30_MODELS=MHP30
 ALL_SEQURE_MODELS=S60 S60P T55
-ALL_MODELS=$(ALL_MINIWARE_MODELS) $(ALL_PINECIL_MODELS) $(ALL_MHP30_MODELS) $(ALL_PINECIL_V2_MODELS) $(ALL_SEQURE_MODELS)
+ALL_GEM_MODELS=Gem
+ALL_MODELS=$(ALL_GEM_MODELS) $(ALL_MINIWARE_MODELS) $(ALL_PINECIL_MODELS) $(ALL_MHP30_MODELS) $(ALL_PINECIL_V2_MODELS) $(ALL_SEQURE_MODELS)
 
 ifneq ($(model),$(filter $(model),$(ALL_MODELS)))
 $(error Invalid model '$(model)', valid options are: $(ALL_MODELS))
@@ -78,6 +79,37 @@ ALL_INCLUDES=$(shell find  ./Core -type d \( $(ALL_INCLUDES_EXCEPT) \) -prune -f
 ALL_SOURCE=$(shell find    ./Core -type d \( $(ALL_SOURCE_EXCEPT)   \) -prune -false -o \( -type f \( -name '*.c' -o -name '*.cpp' \) \) )
 
 # Device dependent settings
+ifeq ($(model),$(filter $(model),$(ALL_GEM_MODELS)))
+$(info Building for Gem )
+DEVICE_BSP_DIR=./Core/BSP/Gem
+LDSCRIPT=./Core/BSP/Gem/stm32f103.ld
+
+flash_size=62k
+bootldr_size=0x0
+DEVICE_DFU_ADDRESS=0x08000000
+
+DEV_GLOBAL_DEFS=-D STM32F103C8Tx       \
+                -D STM32F1             \
+                -D STM32               \
+                -D USE_HAL_DRIVER      \
+                -D STM32F103xB         \
+                -D USE_RTOS_SYSTICK    \
+                -D GCC_ARMCM3          \
+                -D ARM_MATH_CM3        \
+                -D STM32F10X_MD        \
+                -finline-limit=9999999
+
+DEV_LDFLAGS=-Wl,--wrap=printf  -Wl,--no-wchar-size-warning
+DEV_AFLAGS=
+DEV_CFLAGS=-D VECT_TAB_OFFSET=$(bootldr_size)U
+DEV_CXXFLAGS=
+CPUFLAGS=-mcpu=cortex-m3  \
+         -mthumb          \
+         -mfloat-abi=soft
+
+DEVICE_DFU_VID_PID=0x1209:0xDB42
+endif # ALL_MINIWARE_MODELS
+
 ifeq ($(model),$(filter $(model),$(ALL_MINIWARE_MODELS)))
 $(info Building for Miniware )
 DEVICE_BSP_DIR=./Core/BSP/Miniware
@@ -358,6 +390,10 @@ OPTIM=-Os                             \
 # Global defines ---------------------------------------------------------------
 GLOBAL_DEFINES+=$(DEV_GLOBAL_DEFS) -D USE_RTOS_SYSTICK -D MODEL_$(model) -D VECT_TAB_OFFSET=$(bootldr_size)U -fshort-wchar
 
+ifeq ($(model), $(filter $(model),$(ALL_GEM_MODELS)))
+GLOBAL_DEFINES+= -D MODEL_TS101
+endif
+
 ifdef swd_enable
 GLOBAL_DEFINES+=-DSWD_ENABLE
 endif
@@ -377,7 +413,7 @@ COMPILER=gcc
 # arm-none-eabi is the general ARM compiler
 # riscv-none-embed is the riscv compiler
 # riscv-nuclei-elf is the nuclei tuned one for their cores
-ifeq ($(model),$(filter $(model),$(ALL_MINIWARE_MODELS) $(ALL_MHP30_MODELS)))
+ifeq ($(model),$(filter $(model),$(ALL_MINIWARE_MODELS) $(ALL_MHP30_MODELS) $(ALL_GEM_MODELS)))
 COMPILER_PREFIX=arm-none-eabi
 endif
 ifeq ($(model),$(filter $(model),$(ALL_SEQURE_MODELS) ))
