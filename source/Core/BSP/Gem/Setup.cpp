@@ -504,6 +504,8 @@ static void MX_GPIO_Init(void) {
   HAL_GPIO_WritePin(OLED_RESET_GPIO_Port, OLED_RESET_Pin, GPIO_PIN_RESET);
   HAL_Delay(30);
   HAL_GPIO_WritePin(OLED_RESET_GPIO_Port, OLED_RESET_Pin, GPIO_PIN_SET);
+#else
+  HAL_Delay(100); // Wait for OLED charge pump bootstrap
 #endif
 
 #ifdef DC_SELECT_Pin
