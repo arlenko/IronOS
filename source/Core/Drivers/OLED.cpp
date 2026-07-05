@@ -37,7 +37,7 @@ I2C_CLASS::I2C_REG OLED_Setup_Array[] = {
     /**/
     {0x80,         OLED_OFF, 0}, /* Display off */
     {0x80,     OLED_DIVIDER, 0}, /* Set display clock divide ratio / osc freq */
-    {0x80,             0x52, 0}, /* Divide ratios */
+    {0x80,             0x80, 0}, /* Divide ratios */
     {0x80,             0xA8, 0}, /* Set Multiplex Ratio */
     {0x80,  OLED_HEIGHT - 1, 0}, /* Multiplex ratio adjusts how far down the matrix it scans */
     {0x80,             0xC0, 0}, /* Set COM Scan direction */

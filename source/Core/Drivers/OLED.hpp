@@ -46,9 +46,9 @@ extern "C" {
 #define OLED_GRAM_START_FLIP 0
 #define OLED_GRAM_END_FLIP   0x7F
 
-#define OLED_VCOM_LAYOUT 0x12
-#define OLED_SEGMENT_MAP_REVERSED
-#define OLED_DIVIDER 0xD3
+#define OLED_VCOM_LAYOUT 0x02
+// #define OLED_SEGMENT_MAP_REVERSED
+#define OLED_DIVIDER 0xD5
 
 #else
 
