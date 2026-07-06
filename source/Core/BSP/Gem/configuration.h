@@ -67,11 +67,11 @@
 //   #define MIN_BRIGHTNESS     1   // Min OLED brightness selectable
 //   #define MAX_BRIGHTNESS     101 // Max OLED brightness selectable
 // #else
-  #define MIN_BRIGHTNESS     0   // Min OLED brightness selectable
-  #define MAX_BRIGHTNESS     100 // Max OLED brightness selectable
+#define MIN_BRIGHTNESS 0   // Min OLED brightness selectable
+#define MAX_BRIGHTNESS 100 // Max OLED brightness selectable
 // #endif
-#define BRIGHTNESS_STEP    25  // OLED brightness increment
-#define DEFAULT_BRIGHTNESS 25  // default OLED brightness
+#define BRIGHTNESS_STEP    25 // OLED brightness increment
+#define DEFAULT_BRIGHTNESS 25 // default OLED brightness
 
 /**
  * Temp change settings
@@ -192,31 +192,34 @@
 #endif /* TS100 */
 
 #ifdef MODEL_TS101
-#define VOLTAGE_DIV        305 // 700 - Default divider from schematic
-#define CALIBRATION_OFFSET 900 // 900 - Default adc offset in uV
-#define PID_POWER_LIMIT    100 // Sets the max pwm power limit
-#define POWER_LIMIT        0   // 0 watts default limit
-#define MAX_POWER_LIMIT    100
-#define POWER_LIMIT_STEPS  5
-#define OP_AMP_GAIN_STAGE  OP_AMP_GAIN_STAGE_TS100
-#define TEMP_uV_LOOKUP_HAKKO
+#define VOLTAGE_DIV           305 // 700 - Default divider from schematic
+#define CALIBRATION_OFFSET    900 // 900 - Default adc offset in uV
+#define PID_POWER_LIMIT       100 // Sets the max pwm power limit
+#define POWER_LIMIT           0   // 0 watts default limit
+#define MAX_POWER_LIMIT       100
+#define POWER_LIMIT_STEPS     5
+#define OP_AMP_Rf_Gem         390 * 1000 // 390  Kilo-ohms -> From schematic
+#define OP_AMP_Rin_Gem        1500       // 1.5 Kilo-ohms -> From schematic
+#define OP_AMP_GAIN_STAGE_Gem (1 + (OP_AMP_Rf_Gem / OP_AMP_Rin_Gem))
+#define OP_AMP_GAIN_STAGE     OP_AMP_GAIN_STAGE_Gem
+#define TEMP_uV_LOOKUP_TS80
 #define ACCEL_LIS_CLONE          1
 #define HARDWARE_MAX_WATTAGE_X10 1000
 #define TIP_THERMAL_MASS         65 // X10 watts to raise 1 deg C in 1 second
-#define TIP_RESISTANCE           75 // x10 ohms, 7.5 typical for ts100 tips
+#define TIP_RESISTANCE           30 // x10 ohms
 
-#define TIP_HAS_DIRECT_PWM   1
-#define POW_DC               1
+#define TIP_HAS_DIRECT_PWM 1
+#define POW_DC             1
 // #define POW_PD               1
 // #define USB_PD_EPR_WATTAGE   140 /* EPR Supported */
 // #define I2C_SOFT_BUS_2       1
-#define OLED_I2CBB1          1
+#define OLED_I2CBB1 1
 // #define USB_PD_I2CBB2        1
-#define USB_PD_VMAX          20
-#define OLED_128x32          1
+#define USB_PD_VMAX 20
+#define OLED_128x32 1
 // #define OLED_FLIP            1
 // #define HAS_SPLIT_POWER_PATH 1
-#define TEMP_NTC             1
+#define TEMP_NTC 1
 // #define ACCEL_I2CBB1         1
 // #define POW_EPR              1
 // #define TIP_TYPE_SUPPORT     1 // Support for tips of different types, i.e. resistance
