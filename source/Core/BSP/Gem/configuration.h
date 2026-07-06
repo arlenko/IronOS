@@ -71,7 +71,7 @@
   #define MAX_BRIGHTNESS     100 // Max OLED brightness selectable
 // #endif
 #define BRIGHTNESS_STEP    25  // OLED brightness increment
-#define DEFAULT_BRIGHTNESS 50  // default OLED brightness
+#define DEFAULT_BRIGHTNESS 25  // default OLED brightness
 
 /**
  * Temp change settings
@@ -192,7 +192,7 @@
 #endif /* TS100 */
 
 #ifdef MODEL_TS101
-#define VOLTAGE_DIV        700 // 700 - Default divider from schematic
+#define VOLTAGE_DIV        305 // 700 - Default divider from schematic
 #define CALIBRATION_OFFSET 900 // 900 - Default adc offset in uV
 #define PID_POWER_LIMIT    100 // Sets the max pwm power limit
 #define POWER_LIMIT        0   // 0 watts default limit
@@ -214,7 +214,7 @@
 // #define USB_PD_I2CBB2        1
 #define USB_PD_VMAX          20
 #define OLED_128x32          1
-#define OLED_FLIP            1
+// #define OLED_FLIP            1
 // #define HAS_SPLIT_POWER_PATH 1
 #define TEMP_NTC             1
 // #define ACCEL_I2CBB1         1

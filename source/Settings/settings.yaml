@@ -106,8 +106,8 @@ settings:
     name: KeepAwakePulseDuration
   - default: VOLTAGE_DIV
     increment: 1
-    max: 900
-    min: 360
+    max: 850
+    min: 150
     name: VoltageDiv
   - default: BOOST_TEMP
     increment: 10
