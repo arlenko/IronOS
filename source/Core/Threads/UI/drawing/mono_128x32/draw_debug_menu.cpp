@@ -5,7 +5,7 @@
 
 #ifdef OLED_128x32
 extern osThreadId GUITaskHandle;
-extern osThreadId MOVTaskHandle;
+// extern osThreadId MOVTaskHandle;
 extern osThreadId PIDTaskHandle;
 
 void ui_draw_debug_menu(const uint8_t item_number) {
@@ -77,7 +77,7 @@ void ui_draw_debug_menu(const uint8_t item_number) {
     OLED::printNumber(uxTaskGetStackHighWaterMark(GUITaskHandle), 8, FontStyle::SMALL);
     break;
   case 14: // High Water Mark for Movement Task
-    OLED::printNumber(uxTaskGetStackHighWaterMark(MOVTaskHandle), 8, FontStyle::SMALL);
+    // OLED::printNumber(uxTaskGetStackHighWaterMark(MOVTaskHandle), 8, FontStyle::SMALL);
     break;
   case 15: // High Water Mark for PID Task
     OLED::printNumber(uxTaskGetStackHighWaterMark(PIDTaskHandle), 8, FontStyle::SMALL);
