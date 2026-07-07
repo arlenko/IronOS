@@ -143,14 +143,6 @@
 #error "No model defined!"
 #endif
 #define NEEDS_VBUS_PROBE 0
-// Miniware is swapping IMU's around a bit now, so we turn them all on
-
-#define NO_ACCEL 1
-#define ACCEL_MMA
-#define ACCEL_LIS
-#define ACCEL_SC7
-#define ACCEL_MSA
-#define ACCEL_BMA
 
 #define MIN_CALIBRATION_OFFSET 100 // Min value for calibration
 #define SOLDERING_TEMP         320 // Default soldering temp is 320.0 °C
@@ -166,32 +158,9 @@
 
 #define I2C_SOFT_BUS_1 1
 
-#ifdef MODEL_TS100
-#define VOLTAGE_DIV        467 // 467 - Default divider from schematic
-#define CALIBRATION_OFFSET 900 // 900 - Default adc offset in uV
-#define PID_POWER_LIMIT    70  // Sets the max pwm power limit
-#define POWER_LIMIT        0   // 0 watts default limit
-#define MAX_POWER_LIMIT    70
-#define POWER_LIMIT_STEPS  5
-#define OP_AMP_GAIN_STAGE  OP_AMP_GAIN_STAGE_TS100
-#define TEMP_uV_LOOKUP_HAKKO
-#define USB_PD_VMAX              20 // Maximum voltage for PD to negotiate
-#define OLED_I2CBB1              1
-#define ACCEL_I2CBB1             1
-#define HARDWARE_MAX_WATTAGE_X10 750
-#define TIP_THERMAL_MASS         65 // X10 watts to raise 1 deg C in 1 second
-#define TIP_RESISTANCE           75 // x10 ohms, 7.5 typical for ts100 tips
-
-#define POW_DC
-#define I2C_SOFT_BUS_1 1
-#define OLED_I2CBB1    1
-#define ACCEL_I2CBB1   1
-#define TIPTYPE_T12    1 // Can manually pick a T12 tip
-
-#define TEMP_TMP36
-#endif /* TS100 */
-
 #ifdef MODEL_TS101
+#define NO_ACCEL 1
+
 #define VOLTAGE_DIV           305 // 700 - Default divider from schematic
 #define CALIBRATION_OFFSET    900 // 900 - Default adc offset in uV
 #define PID_POWER_LIMIT       100 // Sets the max pwm power limit
@@ -230,73 +199,7 @@
 
 #endif /* TS101 */
 
-#if defined(MODEL_TS80) + defined(MODEL_TS80P) > 0
-#define MAX_POWER_LIMIT   40
-#define POWER_LIMIT_STEPS 2
-#define OP_AMP_GAIN_STAGE OP_AMP_GAIN_STAGE_TS80
-#define TEMP_uV_LOOKUP_TS80
-#define USB_PD_VMAX 12 // Maximum voltage for PD to negotiate
-
-#define TIP_THERMAL_MASS 40
-#define TIP_RESISTANCE   45 // x10 ohms, 4.5 typical for ts80 tips
-#define I2C_SOFT_BUS_2   1
-#define LIS_ORI_FLIP
-#define OLED_FLIP
-#define TIPTYPE_TS80 1 // Only one tip type so far
-
-#endif /* TS80(P) */
-
-#ifdef MODEL_TS80
-#define VOLTAGE_DIV        780 // Default divider from schematic
-#define CALIBRATION_OFFSET 900 // the adc offset in uV
-#define PID_POWER_LIMIT    35  // Sets the max pwm power limit
-#define POWER_LIMIT        32  // 24 watts default power limit
-#define OLED_I2CBB1        1
-#define ACCEL_I2CBB1       1
-
-#define HARDWARE_MAX_WATTAGE_X10 320
-
-#define POW_QC
-
-#define TEMP_TMP36
-#define I2C_SOFT_BUS_1 1
-#define OLED_I2CBB1    1
-#define ACCEL_I2CBB1   1
-#endif /* TS80 */
-
-#ifdef MODEL_TS80P
-#define VOLTAGE_DIV              650  // Default for TS80P with slightly different resistors
-#define CALIBRATION_OFFSET       1500 // the adc offset in uV
-#define PID_POWER_LIMIT          35   // Sets the max pwm power limit
-#define POWER_LIMIT              32   // 30 watts default power limit
-#define I2C_SOFT_BUS_2           1
-#define HARDWARE_MAX_WATTAGE_X10 320
-#define OLED_I2CBB1              1
-#define ACCEL_I2CBB1             1
-
-#define POW_PD             1
-#define USB_PD_EPR_WATTAGE 0 /*No EPR*/
-#define POW_QC             1
-#define TEMP_NTC
-#define I2C_SOFT_BUS_2 1
-#define I2C_SOFT_BUS_1 1
-#define OLED_I2CBB1    1
-#define ACCEL_I2CBB1   1
-#define SC7_ORI_FLIP
-#endif /* TS80P */
-
-// #ifdef MODEL_TS101
-// For whatever reason, Miniware decided to not build a reliable DFU bootloader
-// It can't appear to flash to some of the upper pages of flash,
-// I'm slightly suspect a watchdog or something runs out
-// as device resets before file finishes copying
-// So logo has to be located on page 99 or else it cant be flashed on stock bootloader
-// #define FLASH_LOGOADDR      (0x08000000 + (99 * 1024))
-// #define SETTINGS_START_PAGE (0x08000000 + (127 * 1024))
-// #else
 #define FLASH_LOGOADDR      (0x08000000 + (62 * 1024))
 #define SETTINGS_START_PAGE (0x08000000 + (63 * 1024))
-// #define OLED_96x16          1
-// #endif /* TS101 */
 
 #endif /* CONFIGURATION_H_ */
