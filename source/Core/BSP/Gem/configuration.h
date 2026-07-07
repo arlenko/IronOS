@@ -219,7 +219,7 @@
 #define OLED_128x32 1
 // #define OLED_FLIP            1
 // #define HAS_SPLIT_POWER_PATH 1
-#define TEMP_NTC 1
+#define TEMP_TMP36 1 // Gem uses MCP9700 which has the same characteristics as TMP36
 // #define ACCEL_I2CBB1         1
 // #define POW_EPR              1
 // #define TIP_TYPE_SUPPORT     1 // Support for tips of different types, i.e. resistance
