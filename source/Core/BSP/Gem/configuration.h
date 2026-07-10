@@ -159,7 +159,8 @@
 #define I2C_SOFT_BUS_1 1
 
 #ifdef MODEL_TS101
-#define NO_ACCEL 1
+#define NO_ACCEL    1
+#define STAND_SENSE 1
 
 #define VOLTAGE_DIV           305 // 700 - Default divider from schematic
 #define CALIBRATION_OFFSET    900 // 900 - Default adc offset in uV

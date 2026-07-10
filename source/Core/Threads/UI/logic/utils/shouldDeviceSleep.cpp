@@ -40,6 +40,23 @@ bool shouldBeSleeping() {
     }
   }
 #endif
+
+#ifdef STAND_SENSE
+  // Enable sleep when tip touching a plate.
+  // Debounce to avoild false triggers.
+  static TickType_t lastStandSenseStart = 0;
+  if (HAL_GPIO_ReadPin(STAND_SENSE_GPIO_Port, STAND_SENSE_Pin) == GPIO_PIN_RESET) {
+    if (lastStandSenseStart == 0) {
+      lastStandSenseStart = xTaskGetTickCount();
+    }
+    if ((xTaskGetTickCount() - lastStandSenseStart) > TICKS_100MS) {
+      return true;
+    }
+
+  } else {
+    lastStandSenseStart = 0;
+  }
 #endif
+#endif // ndef NO_SLEEP_MODE
   return false;
 }

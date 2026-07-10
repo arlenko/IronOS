@@ -64,12 +64,12 @@
 #define VIN_GPIO_Port         GPIOA
 #define VIN_ADC1_CHANNEL      ADC_CHANNEL_4
 #define VIN_ADC2_CHANNEL      ADC_CHANNEL_4
-//#define PD_VIN_Pin            GPIO_PIN_6
-//#define PD_VIN_GPIO_Port      GPIOA
-//#define PD_VIN_ADC1_CHANNEL   ADC_CHANNEL_6
-//#define PD_VIN_ADC2_CHANNEL   ADC_CHANNEL_6
-//#define OLED_RESET_Pin        GPIO_PIN_7
-//#define OLED_RESET_GPIO_Port  GPIOA
+// #define PD_VIN_Pin            GPIO_PIN_6
+// #define PD_VIN_GPIO_Port      GPIOA
+// #define PD_VIN_ADC1_CHANNEL   ADC_CHANNEL_6
+// #define PD_VIN_ADC2_CHANNEL   ADC_CHANNEL_6
+// #define OLED_RESET_Pin        GPIO_PIN_7
+// #define OLED_RESET_GPIO_Port  GPIOA
 #define KEY_A_Pin             GPIO_PIN_8
 #define KEY_A_GPIO_Port       GPIOB
 #define PWM_Out_Pin           GPIO_PIN_6
@@ -84,22 +84,25 @@
 #define SDA_Pin               GPIO_PIN_11
 #define SDA_GPIO_Port         GPIOB
 // PD controller
-//#define SCL2_Pin         GPIO_PIN_6
-//#define SCL2_GPIO_Port   GPIOB
-//#define SDA2_Pin         GPIO_PIN_5
-//#define SDA2_GPIO_Port   GPIOB
-//#define INT_PD_Pin       GPIO_PIN_7
-//#define INT_PD_GPIO_Port GPIOB
+// #define SCL2_Pin         GPIO_PIN_6
+// #define SCL2_GPIO_Port   GPIOB
+// #define SDA2_Pin         GPIO_PIN_5
+// #define SDA2_GPIO_Port   GPIOB
+// #define INT_PD_Pin       GPIO_PIN_7
+// #define INT_PD_GPIO_Port GPIOB
 // Selecting the DC source to route to theg
-//#define DC_SELECT_Pin       GPIO_PIN_4
-//#define DC_SELECT_GPIO_Port GPIOB
-//#define PD_SELECT_Pin       GPIO_PIN_15
-//#define PD_SELECT_GPIO_Port GPIOA
+// #define DC_SELECT_Pin       GPIO_PIN_4
+// #define DC_SELECT_GPIO_Port GPIOB
+// #define PD_SELECT_Pin       GPIO_PIN_15
+// #define PD_SELECT_GPIO_Port GPIOA
 
-//#define TIP_RESISTANCE_SENSE_Pin       GPIO_PIN_1
-//#define TIP_RESISTANCE_SENSE_GPIO_Port GPIOA
+// #define TIP_RESISTANCE_SENSE_Pin       GPIO_PIN_1
+// #define TIP_RESISTANCE_SENSE_GPIO_Port GPIOA
 
+#define STAND_SENSE_Pin       GPIO_PIN_5
+#define STAND_SENSE_GPIO_Port GPIOA
 #endif
+
 #if defined(MODEL_TS80) + defined(MODEL_TS80P) > 0
 // TS80 & TS80P pin map
 #define KEY_B_Pin                 GPIO_PIN_0

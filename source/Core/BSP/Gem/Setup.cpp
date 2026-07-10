@@ -436,10 +436,10 @@ static void MX_GPIO_Init(void) {
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin Output Level */
-  #ifdef OLED_RESET_Pin
+/*Configure GPIO pin Output Level */
+#ifdef OLED_RESET_Pin
   HAL_GPIO_WritePin(OLED_RESET_GPIO_Port, OLED_RESET_Pin, GPIO_PIN_RESET);
-  #endif
+#endif
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   /*Configure GPIO pins : PD0 PD1 */
   GPIO_InitStruct.Pin  = GPIO_PIN_0 | GPIO_PIN_1;
@@ -540,6 +540,13 @@ static void MX_GPIO_Init(void) {
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(INT_PD_GPIO_Port, &GPIO_InitStruct);
 
+#endif
+
+#ifdef STAND_SENSE
+  GPIO_InitStruct.Pin  = STAND_SENSE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(STAND_SENSE_GPIO_Port, &GPIO_InitStruct);
 #endif
 }
 #ifdef USE_FULL_ASSERT
