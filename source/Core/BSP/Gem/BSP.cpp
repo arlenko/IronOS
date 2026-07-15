@@ -132,15 +132,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim->Instance == ADC_CONTROL_TIMER) {
     // we want to turn on the output again
     PWMSafetyTimer--;
-// We decrement this safety value so that lockups in the
-// scheduler will not cause the PWM to become locked in an
-// active driving state.
-// While we could assume this could never happen, its a small price for
-// increased safety
+    // We decrement this safety value so that lockups in the
+    // scheduler will not cause the PWM to become locked in an
+    // active driving state.
+    // While we could assume this could never happen, its a small price for
+    // increased safety
+
+    static uint32_t lastCurrentSamplingTick = 0;
+    uint32_t        now                     = HAL_GetTick();
+
 #ifdef TIP_HAS_DIRECT_PWM
+    if (lastCurrentSamplingTick == 0 || (now - lastCurrentSamplingTick) > TICKS_SECOND) {
+      pendingPWM = pendingPWM >= CURRENT_SAMPLE_PWM_DUTY ? pendingPWM : CURRENT_SAMPLE_PWM_DUTY;
+      __HAL_TIM_SET_COMPARE(&htimTip, TIM_CHANNEL_2, pendingPWM / 2);
+      lastCurrentSamplingTick = now;
+    } else {
+      __HAL_TIM_SET_COMPARE(&htimTip, TIM_CHANNEL_2, 0xFFFF);
+    }
+
     htimADC.Instance->CCR4 = powerPWM;
     if (pendingPWM && PWMSafetyTimer) {
-      htimTip.Instance->CCR1 = pendingPWM;
+      __HAL_TIM_SET_COMPARE(&htimTip, PWM_Out_CHANNEL, pendingPWM);
       HAL_TIM_PWM_Start(&htimTip, PWM_Out_CHANNEL);
     } else {
       HAL_TIM_PWM_Stop(&htimTip, PWM_Out_CHANNEL);

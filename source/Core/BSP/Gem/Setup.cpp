@@ -52,6 +52,7 @@ void        Setup_HAL() {
   HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADCReadings, (ADC_SAMPLES)); // start DMA of normal readings
   HAL_ADCEx_InjectedStart(&hadc1);                                   // enable injected readings
   HAL_ADCEx_InjectedStart(&hadc2);                                   // enable injected readings
+  HAL_ADC_Start(&hadc2);                                             // enable regular readings
 }
 
 uint16_t getADCHandleTemp(uint8_t sample) {
@@ -238,11 +239,11 @@ static void MX_ADC2_Init(void) {
    */
   hadc2.Instance                   = ADC2;
   hadc2.Init.ScanConvMode          = ADC_SCAN_ENABLE;
-  hadc2.Init.ContinuousConvMode    = ENABLE;
+  hadc2.Init.ContinuousConvMode    = DISABLE;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
-  hadc2.Init.ExternalTrigConv      = ADC_SOFTWARE_START;
+  hadc2.Init.ExternalTrigConv      = ADC_EXTERNALTRIGCONV_T3_TRGO;
   hadc2.Init.DataAlign             = ADC_DATAALIGN_RIGHT;
-  hadc2.Init.NbrOfConversion       = 0;
+  hadc2.Init.NbrOfConversion       = 1;
   HAL_ADC_Init(&hadc2);
 
   /**Configure Injected Channel
@@ -267,6 +268,12 @@ static void MX_ADC2_Init(void) {
   HAL_ADCEx_InjectedConfigChannel(&hadc2, &sConfigInjected);
   sConfigInjected.InjectedRank = ADC_INJECTED_RANK_4;
   HAL_ADCEx_InjectedConfigChannel(&hadc2, &sConfigInjected);
+
+  ADC_ChannelConfTypeDef sConfigRegular;
+  sConfigRegular.Channel      = CURRENT_SENSE_ADC2_CHANNEL;
+  sConfigRegular.Rank         = ADC_REGULAR_RANK_1;
+  sConfigRegular.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
+  HAL_ADC_ConfigChannel(&hadc2, &sConfigRegular);
 
   // Run ADC internal calibration
   while (HAL_ADCEx_Calibration_Start(&hadc2) != HAL_OK) {
@@ -309,7 +316,7 @@ static void MX_TIP_CONTROL_TIMER_Init(void) {
 
   HAL_TIM_OC_Init(&htimTip);
 
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_OC2REF;
   sMasterConfig.MasterSlaveMode     = TIM_MASTERSLAVEMODE_DISABLE;
   HAL_TIMEx_MasterConfigSynchronization(&htimTip, &sMasterConfig);
 
@@ -322,6 +329,13 @@ static void MX_TIP_CONTROL_TIMER_Init(void) {
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_ENABLE;
   HAL_TIM_PWM_ConfigChannel(&htimTip, &sConfigOC, PWM_Out_CHANNEL);
+
+  // Use channel 2 to fire IRQ callback for current sampling
+  sConfigOC.OCMode     = TIM_OCMODE_PWM2;     // inverted vs CH1's PWM1
+  sConfigOC.Pulse      = sConfigOC.Pulse / 2; // reuses whatever CH1's Pulse currently is; needs to be updated along with CH1
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_ENABLE;
+  HAL_TIM_PWM_ConfigChannel(&htimTip, &sConfigOC, TIM_CHANNEL_2);
 
   GPIO_InitTypeDef GPIO_InitStruct;
 

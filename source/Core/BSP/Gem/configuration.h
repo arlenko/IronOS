@@ -162,6 +162,14 @@
 #define NO_ACCEL    1
 #define STAND_SENSE 1
 
+#define OP_AMP_CURRENT_SENSE_Rf              240 * 1000
+#define OP_AMP_CURRENT_SENSE_Rin             5.1 * 1000
+#define OP_AMP_CURRENT_SENSE_GAIN_STAGE      ((OP_AMP_CURRENT_SENSE_Rf) / (OP_AMP_CURRENT_SENSE_Rin))
+#define CURRENT_SENSE_SHUNT_RESISTANCE_mOhms 5
+#define TIP_DISCONNECT_CURRENT_MA            100   // threshold below which tip is considered disconnected
+#define TIP_SHORT_CURRENT_MA                 12000 // threshold above which tip is considered shorted
+#define CURRENT_SAMPLE_PWM_DUTY              28    // Minimal duty cycle at which it's reasonable to sample current
+
 #define VOLTAGE_DIV           305 // 700 - Default divider from schematic
 #define CALIBRATION_OFFSET    900 // 900 - Default adc offset in uV
 #define PID_POWER_LIMIT       100 // Sets the max pwm power limit
@@ -170,7 +178,7 @@
 #define POWER_LIMIT_STEPS     5
 #define OP_AMP_Rf_Gem         390 * 1000 // 390  Kilo-ohms -> From schematic
 #define OP_AMP_Rin_Gem        1500       // 1.5 Kilo-ohms -> From schematic
-#define OP_AMP_GAIN_STAGE_Gem (1 + (OP_AMP_Rf_Gem / OP_AMP_Rin_Gem))
+#define OP_AMP_GAIN_STAGE_Gem ((OP_AMP_Rf_Gem) / (OP_AMP_Rin_Gem))
 #define OP_AMP_GAIN_STAGE     OP_AMP_GAIN_STAGE_Gem
 #define TEMP_uV_LOOKUP_TS80
 #define ACCEL_LIS_CLONE          1
