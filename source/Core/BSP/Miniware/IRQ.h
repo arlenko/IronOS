@@ -18,6 +18,7 @@
 extern "C" {
 #endif
 void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc);
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc); // Gem. July 2026. We have regular conversion callback after HAL upgrade
 void HAL_GPIO_EXTI_Callback(uint16_t);
 
 #ifdef __cplusplus

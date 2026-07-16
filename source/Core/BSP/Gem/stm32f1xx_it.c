@@ -25,7 +25,10 @@ void SysTick_Handler(void) { osSystickHandler(); }
 // DMA used to move the ADC readings into system ram
 void DMA1_Channel1_IRQHandler(void) { HAL_DMA_IRQHandler(&hdma_adc1); }
 // ADC interrupt used for DMA
-void ADC1_2_IRQHandler(void) { HAL_ADC_IRQHandler(&hadc1); }
+void ADC1_2_IRQHandler(void) {
+  HAL_ADC_IRQHandler(&hadc1);
+  HAL_ADC_IRQHandler(&hadc2);
+}
 
 // Timer 1 has overflowed, used for HAL ticks
 void TIM1_UP_IRQHandler(void) { HAL_TIM_IRQHandler(&htim1); }

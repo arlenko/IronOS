@@ -25,6 +25,8 @@ uint16_t totalPWM; // htimADC.Init.Period, the full PWM cycle
 static bool fastPWM;
 static bool infastPWM;
 
+static history<uint32_t, 6> rawCurrentSamplesFilter = {{0}, 0, 0};
+
 void resetWatchdog() { HAL_IWDG_Refresh(&hiwdg); }
 #ifdef TEMP_NTC
 // Lookup table for the NTC
@@ -98,6 +100,12 @@ uint16_t getInputVoltageX10(uint16_t divisor, uint8_t sample) {
   res *= 4;
   res /= divisor;
   return res;
+}
+
+uint32_t getCurrentMilliamps() {
+  uint32_t adc      = rawCurrentSamplesFilter.average();
+  uint32_t v_adc_mV = ((uint32_t)adc * ADC_VDD_MV) / 4096;
+  return (v_adc_mV * 1000) / (CURRENT_SENSE_SHUNT_RESISTANCE_mOhms * OP_AMP_CURRENT_SENSE_GAIN_STAGE);
 }
 
 static void switchToFastPWM(void) {
@@ -185,6 +193,14 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) {
     HAL_TIM_PWM_Stop(&htimTip, PWM_Out_CHANNEL);
   }
 }
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
+  if (hadc == &hadc2) {
+    // ADC2 regular conversion (CURRENT_SENSE) complete
+    rawCurrentSamplesFilter.update(HAL_ADC_GetValue(hadc));
+  }
+}
+
 void unstick_I2C() {
 #ifndef I2C_SOFT_BUS_1
   GPIO_InitTypeDef GPIO_InitStruct;
@@ -270,12 +286,8 @@ uint8_t       lastTipResistance        = 0; // default to unknown
 const uint8_t numTipResistanceReadings = 3;
 uint32_t      tipResistanceReadings[3] = {0, 0, 0};
 uint8_t       tipResistanceReadingSlot = 0;
-bool          isTipDisconnected() {
 
-  uint16_t tipDisconnectedThres = TipThermoModel::getTipMaxInC() - 5;
-  uint32_t tipTemp              = TipThermoModel::getTipInC();
-  return tipTemp > tipDisconnectedThres;
-}
+bool isTipDisconnected() { return getCurrentMilliamps() <= TIP_DISCONNECT_CURRENT_MA; }
 
 void setStatusLED(const enum StatusLED state) {}
 void setBuzzer(bool on) {}
@@ -409,11 +421,9 @@ uint8_t getTipResistanceX10() {
   return user_selected_tip;
 #endif
 }
-#ifdef TIP_RESISTANCE_SENSE_Pin
-bool isTipShorted() { return tipShorted; }
-#else
-bool isTipShorted() { return false; }
-#endif
+
+bool isTipShorted() { return getCurrentMilliamps() >= TIP_SHORT_CURRENT_MA; }
+
 uint16_t getTipThermalMass() {
 #ifdef TIP_RESISTANCE_SENSE_Pin
   if (lastTipResistance >= 80) {

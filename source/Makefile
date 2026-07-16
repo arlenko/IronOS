@@ -405,9 +405,7 @@ endif
 endif
 
 ifdef debug_enable
-  DEV_CXXFLAGS += -g3
-  OPTIM := $(filter-out -Os,$(OPTIM))
-  OPTIM += -Og
+  DEV_CXXFLAGS += -g
 endif
 
 # Libs -------------------------------------------------------------------------
