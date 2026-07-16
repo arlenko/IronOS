@@ -179,7 +179,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     uint32_t now                     = HAL_GetTick();
     uint32_t currentSamplingInterval = getCurrentSamplingInterval();
 
-    if (currentSamplingAllowed() && (lastCurrentSamplingTick == 0 || (now - lastCurrentSamplingTick) > currentSamplingInterval)) {
+    if (currentSamplingAllowed() &&
+        (lastCurrentSamplingTick == 0 || (now - lastCurrentSamplingTick) > currentSamplingInterval)) {
       pendingPWM = pendingPWM >= CURRENT_SAMPLE_PWM_DUTY ? pendingPWM : CURRENT_SAMPLE_PWM_DUTY;
       __HAL_TIM_SET_COMPARE(&htimTip, TIM_CHANNEL_2, pendingPWM / 2);
       currentSamplingActive = true;
@@ -327,7 +328,10 @@ uint64_t getDeviceID() {
 
 uint8_t preStartChecksDone() {
 #ifdef TIP_RESISTANCE_SENSE_Pin
-  return (lastTipResistance == 0 || tipResistanceReadingSlot < numTipResistanceReadings || tipMeasurementOccuring || tipShorted) ? 0 : 1;
+  return (lastTipResistance == 0 || tipResistanceReadingSlot < numTipResistanceReadings || tipMeasurementOccuring ||
+          tipShorted)
+             ? 0
+             : 1;
 #else
   return 1;
 #endif
