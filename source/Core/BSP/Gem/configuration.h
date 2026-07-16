@@ -166,11 +166,11 @@
 #define OP_AMP_CURRENT_SENSE_Rin             5.1 * 1000
 #define OP_AMP_CURRENT_SENSE_GAIN_STAGE      ((OP_AMP_CURRENT_SENSE_Rf) / (OP_AMP_CURRENT_SENSE_Rin))
 #define CURRENT_SENSE_SHUNT_RESISTANCE_mOhms 5
-#define TIP_DISCONNECT_CURRENT_MA            10   // threshold below which tip is considered disconnected
+#define TIP_DISCONNECT_CURRENT_MA            10    // threshold below which tip is considered disconnected
 #define TIP_SHORT_CURRENT_MA                 12000 // threshold above which tip is considered shorted
-#define CURRENT_SAMPLE_PWM_DUTY              28    // Minimal duty cycle at which it's reasonable to sample current
+#define CURRENT_SAMPLE_PWM_DUTY              36    // 36/255 is ~14% duty. Minimal duty cycle at which it's reasonable to sample current
 
-#define VOLTAGE_DIV           305 // 700 - Default divider from schematic
+#define VOLTAGE_DIV           282 // Resistive divider from schematic
 #define CALIBRATION_OFFSET    900 // 900 - Default adc offset in uV
 #define PID_POWER_LIMIT       100 // Sets the max pwm power limit
 #define POWER_LIMIT           0   // 0 watts default limit

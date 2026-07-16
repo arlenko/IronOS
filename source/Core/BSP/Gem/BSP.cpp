@@ -3,6 +3,7 @@
 #include "BSP.h"
 #include "BootLogo.h"
 #include "I2C_Wrapper.hpp"
+#include "OperatingModes.h"
 #include "Pins.h"
 #include "Settings.h"
 #include "Setup.h"
@@ -24,6 +25,11 @@ uint16_t totalPWM; // htimADC.Init.Period, the full PWM cycle
 
 static bool fastPWM;
 static bool infastPWM;
+
+static volatile bool     currentSamplingActive   = false;
+static volatile uint32_t lastCurrentSamplingTick = 0;
+
+extern OperatingMode currentOperatingMode;
 
 static history<uint32_t, 6> rawCurrentSamplesFilter = {{0}, 0, 0};
 
@@ -108,6 +114,30 @@ uint32_t getCurrentMilliamps() {
   return (v_adc_mV * 1000) / (CURRENT_SENSE_SHUNT_RESISTANCE_mOhms * OP_AMP_CURRENT_SENSE_GAIN_STAGE);
 }
 
+uint32_t getCurrentSamplingInterval() {
+  if (isTipDisconnected()) {
+    // When tip disconnected sample current more frequently
+    // for a faster response to tip connection
+    return TICKS_SECOND;
+  } else if (currentOperatingMode == OperatingMode::Soldering) {
+    return TICKS_SECOND;
+  }
+
+  return TICKS_SECOND * 2;
+}
+
+// We may need to disable current sampling for some operating modes
+bool currentSamplingAllowed() {
+  switch (currentOperatingMode) {
+  case OperatingMode::Sleeping:
+  case OperatingMode::Hibernating:
+  case OperatingMode::ThermalRunaway:
+    return false;
+  default:
+    return true;
+  }
+}
+
 static void switchToFastPWM(void) {
   // 10Hz
   infastPWM              = true;
@@ -146,14 +176,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     // While we could assume this could never happen, its a small price for
     // increased safety
 
-    static uint32_t lastCurrentSamplingTick = 0;
-    uint32_t        now                     = HAL_GetTick();
+    uint32_t now                     = HAL_GetTick();
+    uint32_t currentSamplingInterval = getCurrentSamplingInterval();
 
-#ifdef TIP_HAS_DIRECT_PWM
-    if (lastCurrentSamplingTick == 0 || (now - lastCurrentSamplingTick) > TICKS_SECOND) {
+    if (currentSamplingAllowed() && (lastCurrentSamplingTick == 0 || (now - lastCurrentSamplingTick) > currentSamplingInterval)) {
       pendingPWM = pendingPWM >= CURRENT_SAMPLE_PWM_DUTY ? pendingPWM : CURRENT_SAMPLE_PWM_DUTY;
       __HAL_TIM_SET_COMPARE(&htimTip, TIM_CHANNEL_2, pendingPWM / 2);
-      lastCurrentSamplingTick = now;
+      currentSamplingActive = true;
     } else {
       __HAL_TIM_SET_COMPARE(&htimTip, TIM_CHANNEL_2, 0xFFFF);
     }
@@ -165,14 +194,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     } else {
       HAL_TIM_PWM_Stop(&htimTip, PWM_Out_CHANNEL);
     }
-#else
-    htimADC.Instance->CCR4 = pendingPWM;
-    if (htimADC.Instance->CCR4 && PWMSafetyTimer) {
-      HAL_TIM_PWM_Start(&htimTip, PWM_Out_CHANNEL);
-    } else {
-      HAL_TIM_PWM_Stop(&htimTip, PWM_Out_CHANNEL);
-    }
-#endif
+
     if (fastPWM != infastPWM) {
       if (fastPWM) {
         switchToFastPWM();
@@ -191,6 +213,10 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) {
   // This was a when the PWM for the output has timed out
   if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_4) {
     HAL_TIM_PWM_Stop(&htimTip, PWM_Out_CHANNEL);
+    if (currentSamplingActive) {
+      lastCurrentSamplingTick = HAL_GetTick();
+      currentSamplingActive   = false;
+    }
   }
 }
 
