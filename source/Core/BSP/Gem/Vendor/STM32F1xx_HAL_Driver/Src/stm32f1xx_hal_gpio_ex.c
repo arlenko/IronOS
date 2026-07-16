@@ -7,6 +7,17 @@
   *          functionalities of the General Purpose Input/Output (GPIO) extension peripheral.
   *           + Extended features functions
   *
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
   @verbatim
   ==============================================================================
                     ##### GPIO Peripheral extension features #####
@@ -23,52 +34,25 @@
 
   @endverbatim
   ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
-  *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
 /** @addtogroup STM32F1xx_HAL_Driver
- * @{
- */
+  * @{
+  */
 
 /** @defgroup GPIOEx GPIOEx
- * @brief GPIO HAL module driver
- * @{
- */
+  * @brief GPIO HAL module driver
+  * @{
+  */
 
 #ifdef HAL_GPIO_MODULE_ENABLED
 
 /** @defgroup GPIOEx_Exported_Functions GPIOEx Exported Functions
- * @{
- */
+  * @{
+  */
 
 /** @defgroup GPIOEx_Exported_Functions_Group1 Extended features functions
  *  @brief    Extended features functions
@@ -87,14 +71,15 @@
   */
 
 /**
- * @brief  Configures the port and pin on which the EVENTOUT Cortex signal will be connected.
- * @param  GPIO_PortSource Select the port used to output the Cortex EVENTOUT signal.
- *   This parameter can be a value of @ref GPIOEx_EVENTOUT_PORT.
- * @param  GPIO_PinSource Select the pin used to output the Cortex EVENTOUT signal.
- *   This parameter can be a value of @ref GPIOEx_EVENTOUT_PIN.
- * @retval None
- */
-void HAL_GPIOEx_ConfigEventout(uint32_t GPIO_PortSource, uint32_t GPIO_PinSource) {
+  * @brief  Configures the port and pin on which the EVENTOUT Cortex signal will be connected.
+  * @param  GPIO_PortSource Select the port used to output the Cortex EVENTOUT signal.
+  *   This parameter can be a value of @ref GPIOEx_EVENTOUT_PORT.
+  * @param  GPIO_PinSource Select the pin used to output the Cortex EVENTOUT signal.
+  *   This parameter can be a value of @ref GPIOEx_EVENTOUT_PIN.
+  * @retval None
+  */
+void HAL_GPIOEx_ConfigEventout(uint32_t GPIO_PortSource, uint32_t GPIO_PinSource)
+{
   /* Verify the parameters */
   assert_param(IS_AFIO_EVENTOUT_PORT(GPIO_PortSource));
   assert_param(IS_AFIO_EVENTOUT_PIN(GPIO_PinSource));
@@ -104,33 +89,38 @@ void HAL_GPIOEx_ConfigEventout(uint32_t GPIO_PortSource, uint32_t GPIO_PinSource
 }
 
 /**
- * @brief  Enables the Event Output.
- * @retval None
- */
-void HAL_GPIOEx_EnableEventout(void) { SET_BIT(AFIO->EVCR, AFIO_EVCR_EVOE); }
+  * @brief  Enables the Event Output.
+  * @retval None
+  */
+void HAL_GPIOEx_EnableEventout(void)
+{
+  SET_BIT(AFIO->EVCR, AFIO_EVCR_EVOE);
+}
 
 /**
- * @brief  Disables the Event Output.
- * @retval None
- */
-void HAL_GPIOEx_DisableEventout(void) { CLEAR_BIT(AFIO->EVCR, AFIO_EVCR_EVOE); }
+  * @brief  Disables the Event Output.
+  * @retval None
+  */
+void HAL_GPIOEx_DisableEventout(void)
+{
+  CLEAR_BIT(AFIO->EVCR, AFIO_EVCR_EVOE);
+}
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 #endif /* HAL_GPIO_MODULE_ENABLED */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

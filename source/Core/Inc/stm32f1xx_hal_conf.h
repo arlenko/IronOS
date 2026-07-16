@@ -114,6 +114,13 @@ extern "C" {
 #endif                                /* HSI_VALUE */
 
 /**
+ * @brief Maximum startup time of the Low-Speed Internal (LSI) RC oscillator
+ */
+#if !defined(LSI_STARTUP_TIME)
+#define LSI_STARTUP_TIME  85U  /*!< LSI Maximum startup time in us */
+#endif
+
+/**
  * @brief Internal Low Speed oscillator (LSI) value.
  */
 #if !defined(LSI_VALUE)
