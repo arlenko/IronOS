@@ -12,6 +12,10 @@
 extern uint8_t heaterThermalRunawayCounter;
 
 bool checkExitSoldering(void) {
+  if (isTipDisconnected()) {
+    return true; // How are we going to solder without the tip?
+  }
+
 #ifdef POW_DC
   // Undervoltage test
   if (checkForUnderVoltage()) {
@@ -81,7 +85,8 @@ int8_t getPowerSourceNumber(void) {
 TemperatureType_t getTipTemp(void) {
 #ifdef FILTER_DISPLAYED_TIP_TEMP
   static history<TemperatureType_t, FILTER_DISPLAYED_TIP_TEMP> Filter_Temp;
-  TemperatureType_t                                            reading = getSettingValue(SettingsOptions::TemperatureInF) ? TipThermoModel::getTipInF() : TipThermoModel::getTipInC();
+  TemperatureType_t                                            reading =
+      getSettingValue(SettingsOptions::TemperatureInF) ? TipThermoModel::getTipInF() : TipThermoModel::getTipInC();
   Filter_Temp.update(reading);
   return Filter_Temp.average();
 

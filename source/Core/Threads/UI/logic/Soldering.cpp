@@ -173,12 +173,5 @@ OperatingMode gui_solderingMode(const ButtonState buttons, guiContext *cxt) {
     return OperatingMode::ThermalRunaway;
   }
 
-  if (isTipDisconnected()) {
-    // Exit to homescreen if the tip was disconnected
-    currentTempTargetDegC = 0;
-    cxt->transitionMode   = TransitionAnimation::Right;
-    return OperatingMode::HomeScreen;
-  }
-
   return handleSolderingButtons(buttons, cxt);
 }
