@@ -120,7 +120,12 @@ uint32_t getCurrentSamplingInterval() {
     // for a faster response to tip connection
     return TICKS_SECOND;
   } else if (currentOperatingMode == OperatingMode::Soldering) {
-    return TICKS_SECOND;
+    // In soldering mode sample frequently if pending duty cycle is high enough
+    if (pendingPWM >= CURRENT_SAMPLE_PWM_DUTY) {
+      return TICKS_100MS * 5;
+    } else {
+      return TICKS_SECOND;
+    }
   }
 
   return TICKS_SECOND * 2;
