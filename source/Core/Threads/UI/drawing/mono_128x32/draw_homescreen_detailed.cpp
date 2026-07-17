@@ -14,20 +14,20 @@ void ui_draw_homescreen_detailed(TemperatureType_t tipTemp) {
       OLED::drawArea(0, 0, 56, 32, disconnectedTip);
     }
     if (OLED::getRotation()) {
-      OLED::setCursor(-1, 0);
+      OLED::setCursor(-1, 4);
     } else {
-      OLED::setCursor(56, 0);
+      OLED::setCursor(56, 4);
     }
     uint32_t Vlt = getInputVoltageX10(getSettingValue(SettingsOptions::VoltageDiv), 0);
     OLED::printNumber(Vlt / 10, 2, FontStyle::LARGE);
     OLED::print(LargeSymbolDot, FontStyle::LARGE);
     OLED::printNumber(Vlt % 10, 1, FontStyle::LARGE);
     if (OLED::getRotation()) {
-      OLED::setCursor(48, 8);
+      OLED::setCursor(OLED::getCursorX(), 4);
     } else {
-      OLED::setCursor(91, 8);
+      OLED::setCursor(OLED::getCursorX(), 4);
     }
-    OLED::print(SmallSymbolVolts, FontStyle::SMALL);
+    OLED::print(LargeSymbolVolts, FontStyle::LARGE);
   } else {
     // One-line LARGE (12x24) tip temperature flush to one edge, vertically
     // centred; two SMALL (8x16) status rows (set-temp, voltage) flush to the
