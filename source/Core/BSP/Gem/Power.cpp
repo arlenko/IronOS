@@ -22,15 +22,10 @@ void power_check() {
 }
 
 bool getIsPoweredByDCIN() {
-#if defined(MODEL_TS80) + defined(MODEL_TS80P) > 0
-  return false;
-#endif
-#ifdef MODEL_TS101
+#ifdef MODEL_Gem
   // TODO have to check what we are using
   // return HAL_GPIO_ReadPin(DC_SELECT_GPIO_Port, DC_SELECT_Pin) == GPIO_PIN_SET;
   return true;
 #endif
-#ifdef MODEL_TS100
   return true;
-#endif
 }

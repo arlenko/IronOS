@@ -137,9 +137,9 @@
 // Vin_max = (3.3*(r1+r2))/(r2)
 // vdiv = (32768*4)/(vin_max*10)
 
-#if defined(MODEL_TS100) + defined(MODEL_TS80) + defined(MODEL_TS80P) + defined(MODEL_TS101) > 1
+#if defined(MODEL_Gem) > 1
 #error "Multiple models defined!"
-#elif defined(MODEL_TS100) + defined(MODEL_TS80) + defined(MODEL_TS80P) + defined(MODEL_TS101) == 0
+#elif defined(MODEL_Gem) == 0
 #error "No model defined!"
 #endif
 #define NEEDS_VBUS_PROBE 0
@@ -158,7 +158,7 @@
 
 #define I2C_SOFT_BUS_1 1
 
-#ifdef MODEL_TS101
+#ifdef MODEL_Gem
 #define NO_ACCEL    1
 #define STAND_SENSE 1
 

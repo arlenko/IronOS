@@ -173,10 +173,6 @@ OPTIM=-Os                             \
 # Global defines ---------------------------------------------------------------
 GLOBAL_DEFINES+=$(DEV_GLOBAL_DEFS) -D USE_RTOS_SYSTICK -D MODEL_$(model) -D VECT_TAB_OFFSET=$(bootldr_size)U -fshort-wchar
 
-ifeq ($(model), $(filter $(model),$(ALL_GEM_MODELS)))
-GLOBAL_DEFINES+= -D MODEL_TS101
-endif
-
 ifdef swd_enable
 GLOBAL_DEFINES+=-DSWD_ENABLE
 endif
