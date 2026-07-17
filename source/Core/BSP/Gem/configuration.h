@@ -55,9 +55,10 @@
  * OLED Orientation
  *
  */
-#define ORIENTATION_MODE           0 // 0: Right 1:Left 2:Automatic - Default Automatic
-#define MAX_ORIENTATION_MODE       1 // Up to auto
-#define REVERSE_BUTTON_TEMP_CHANGE 0 // 0:Default 1:Reverse - Reverse the plus and minus button assigment for temperature change
+#define ORIENTATION_MODE     0 // 0: Right 1:Left 2:Automatic - Default Automatic
+#define MAX_ORIENTATION_MODE 1 // Up to auto
+// 0:Default 1:Reverse - Reverse the plus and minus button assigment for temperature change
+#define REVERSE_BUTTON_TEMP_CHANGE 0
 
 /**
  * OLED Brightness
@@ -87,11 +88,7 @@
 #define POWER_PULSE_WAIT_MAX     9   // 9*2.5s = 22.5 seconds
 #define POWER_PULSE_DURATION_MAX 9   // 9*250ms = 2.25 seconds
 
-#ifdef MODEL_TS100
-#define POWER_PULSE_DEFAULT 0
-#else
-#define POWER_PULSE_DEFAULT 5
-#endif                                 /* TS100 */
+#define POWER_PULSE_DEFAULT          0
 #define POWER_PULSE_WAIT_DEFAULT     4 // Default rate of the power pulse: 4*2500 = 10000 ms = 10 s
 #define POWER_PULSE_DURATION_DEFAULT 1 // Default duration of the power pulse: 1*250 = 250 ms
 
@@ -168,7 +165,7 @@
 #define CURRENT_SENSE_SHUNT_RESISTANCE_mOhms 5
 #define TIP_DISCONNECT_CURRENT_MA            10    // threshold below which tip is considered disconnected
 #define TIP_SHORT_CURRENT_MA                 12000 // threshold above which tip is considered shorted
-#define CURRENT_SAMPLE_PWM_DUTY              40    // 40/255 is ~15% duty. Minimal duty cycle at which it's reasonable to sample current
+#define CURRENT_SAMPLE_PWM_DUTY 40 // 40/255 is ~15% duty. Minimal duty cycle at which it's reasonable to sample current
 
 #define VOLTAGE_DIV           282 // Resistive divider from schematic
 #define CALIBRATION_OFFSET    900 // 900 - Default adc offset in uV
