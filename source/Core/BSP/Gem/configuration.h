@@ -180,7 +180,7 @@
 #define OP_AMP_Rin_Gem        1500       // 1.5 Kilo-ohms -> From schematic
 #define OP_AMP_GAIN_STAGE_Gem ((OP_AMP_Rf_Gem) / (OP_AMP_Rin_Gem))
 #define OP_AMP_GAIN_STAGE     OP_AMP_GAIN_STAGE_Gem
-#define TEMP_uV_LOOKUP_TS80
+#define TEMP_uV_LOOKUP_C245
 #define ACCEL_LIS_CLONE          1
 #define HARDWARE_MAX_WATTAGE_X10 1000
 #define TIP_THERMAL_MASS         65 // X10 watts to raise 1 deg C in 1 second

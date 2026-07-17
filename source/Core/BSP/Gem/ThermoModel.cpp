@@ -68,7 +68,6 @@ const int32_t uVtoDegC[] = {
 #endif
 
 #ifdef TEMP_uV_LOOKUP_TS80
-
 const int32_t uVtoDegC[] = {
     //
     //
@@ -125,6 +124,67 @@ const int32_t uVtoDegC[] = {
     38137, 500, //
 };
 #endif
+
+#ifdef TEMP_uV_LOOKUP_C245
+const int32_t uVtoDegC[] = {
+    //
+    //
+    0,     0,   //
+    397,   10,  //
+    798,   20,  //
+    1203,  30,  //
+    1611,  40,  //
+    2022,  50,  //
+    2436,  60,  //
+    2850,  70,  //
+    3266,  80,  //
+    3681,  90,  //
+    4095,  100, //
+    4508,  110, //
+    4919,  120, //
+    5327,  130, //
+    5733,  140, //
+    6137,  150, //
+    6539,  160, //
+    6939,  170, //
+    7338,  180, //
+    7738,  190, //
+    8137,  200, //
+    8537,  210, //
+    8938,  220, //
+    9341,  230, //
+    9745,  240, //
+    10151, 250, //
+    10560, 260, //
+    10969, 270, //
+    11381, 280, //
+    11793, 290, //
+    12207, 300, //
+    12623, 310, //
+    13039, 320, //
+    13456, 330, //
+    13874, 340, //
+    14292, 350, //
+    14712, 360, //
+    15132, 370, //
+    15552, 380, //
+    15974, 390, //
+    16395, 400, //
+    16818, 410, //
+    17241, 420, //
+    17664, 430, //
+    18088, 440, //
+    18513, 450, //
+    18938, 460, //
+    19363, 470, //
+    19790, 480, //
+    20216, 490, //
+    20644, 500, //
+};
+#endif
+
 const int uVtoDegCItems = sizeof(uVtoDegC) / (2 * sizeof(uVtoDegC[0]));
 
-TemperatureType_t TipThermoModel::convertuVToDegC(uint32_t tipuVDelta) { return Utils::InterpolateLookupTable(uVtoDegC, uVtoDegCItems, tipuVDelta); }
+TemperatureType_t TipThermoModel::convertuVToDegC(uint32_t tipuVDelta) {
+  return Utils::InterpolateLookupTable(uVtoDegC, uVtoDegCItems, tipuVDelta);
+}
