@@ -3,7 +3,7 @@
 #include <stdint.h>
 /**
  * Configuration.h
- * Define here your default pre settings for TS80(P) or TS10(0/1)
+ * Define here your default settings
  *
  */
 
@@ -33,7 +33,7 @@
 
 /**
  * Auto start off for safety.
- * Pissible values are:
+ * Possible values are:
  *  0 - none
  *  1 - Soldering Temperature
  *  2 - Sleep Temperature
@@ -64,15 +64,12 @@
  * OLED Brightness
  *
  */
-// #if defined(MODEL_TS101)
 //   #define MIN_BRIGHTNESS     1   // Min OLED brightness selectable
 //   #define MAX_BRIGHTNESS     101 // Max OLED brightness selectable
-// #else
-#define MIN_BRIGHTNESS 0   // Min OLED brightness selectable
-#define MAX_BRIGHTNESS 100 // Max OLED brightness selectable
-// #endif
-#define BRIGHTNESS_STEP    25 // OLED brightness increment
-#define DEFAULT_BRIGHTNESS 25 // default OLED brightness
+#define MIN_BRIGHTNESS     0   // Min OLED brightness selectable
+#define MAX_BRIGHTNESS     100 // Max OLED brightness selectable
+#define BRIGHTNESS_STEP    25  // OLED brightness increment
+#define DEFAULT_BRIGHTNESS 25  // default OLED brightness
 
 /**
  * Temp change settings
@@ -115,16 +112,6 @@
 #define ANIMATION_LOOP           1  // 0: off 1: on
 #define ANIMATION_SPEED          settingOffSpeed_t::MEDIUM
 
-#define OP_AMP_Rf_TS100  750 * 1000 // 750  Kilo-ohms -> From schematic, R1
-#define OP_AMP_Rin_TS100 2370       // 2.37 Kilo-ohms -> From schematic, R2
-
-#define OP_AMP_GAIN_STAGE_TS100 (1 + (OP_AMP_Rf_TS100 / OP_AMP_Rin_TS100))
-
-#define OP_AMP_Rf_TS80  180 * 1000 //  180  Kilo-ohms -> From schematic, R6
-#define OP_AMP_Rin_TS80 2000       //  2.0  Kilo-ohms -> From schematic, R3
-
-#define OP_AMP_GAIN_STAGE_TS80 (1 + (OP_AMP_Rf_TS80 / OP_AMP_Rin_TS80))
-
 #define ADC_MAX_READING (4096 * 8) // Maximum reading of the adc
 #define ADC_VDD_MV      3300       // ADC max reading millivolts
 
@@ -151,8 +138,6 @@
 #define MIN_BOOST_TEMP_C       250 // The min settable temp for boost mode °C
 #define MIN_BOOST_TEMP_F       480 // The min settable temp for boost mode °F
 
-// Miniware cant be trusted, and keep using the GD32 randomly now, so assume they will clones in the future
-
 #define I2C_SOFT_BUS_1 1
 
 #ifdef MODEL_Gem
@@ -178,7 +163,6 @@
 #define OP_AMP_GAIN_STAGE_Gem ((OP_AMP_Rf_Gem) / (OP_AMP_Rin_Gem))
 #define OP_AMP_GAIN_STAGE     OP_AMP_GAIN_STAGE_Gem
 #define TEMP_uV_LOOKUP_C245
-#define ACCEL_LIS_CLONE          1
 #define HARDWARE_MAX_WATTAGE_X10 1000
 #define TIP_THERMAL_MASS         65 // X10 watts to raise 1 deg C in 1 second
 #define TIP_RESISTANCE           30 // x10 ohms
@@ -203,7 +187,7 @@
 // #define HAS_POWER_DEBUG_MENU
 // #define DEBUG_POWER_MENU_BUTTON_B
 
-#endif /* TS101 */
+#endif
 
 #define FLASH_LOGOADDR      (0x08000000 + (62 * 1024))
 #define SETTINGS_START_PAGE (0x08000000 + (63 * 1024))
