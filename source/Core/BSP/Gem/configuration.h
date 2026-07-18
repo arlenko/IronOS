@@ -165,7 +165,7 @@
 #define CURRENT_SENSE_SHUNT_RESISTANCE_mOhms 5
 #define TIP_DISCONNECT_CURRENT_MA            10    // threshold below which tip is considered disconnected
 #define TIP_SHORT_CURRENT_MA                 12000 // threshold above which tip is considered shorted
-#define CURRENT_SAMPLE_PWM_DUTY 40 // 40/255 is ~15% duty. Minimal duty cycle at which it's reasonable to sample current
+#define TIP_MEASUREMENT_DUTY                 40    // 40/255 is ~15% PWM duty
 
 #define VOLTAGE_DIV           282 // Resistive divider from schematic
 #define CALIBRATION_OFFSET    900 // 900 - Default adc offset in uV

@@ -114,26 +114,24 @@ uint32_t getCurrentMilliamps() {
   return (v_adc_mV * 1000) / (CURRENT_SENSE_SHUNT_RESISTANCE_mOhms * OP_AMP_CURRENT_SENSE_GAIN_STAGE);
 }
 
-uint32_t getCurrentSamplingInterval() {
-  if (isTipDisconnected()) {
-    // When tip disconnected sample current more frequently
-    // for a faster response to tip connection
-    return TICKS_SECOND;
-  } else if (currentOperatingMode == OperatingMode::Soldering) {
-    // In soldering mode sample frequently if pending duty cycle is high enough
-    if (pendingPWM >= CURRENT_SAMPLE_PWM_DUTY) {
-      return TICKS_100MS * 5;
-    } else {
-      return TICKS_SECOND;
-    }
+uint32_t getCurrentSamplingInterval(OperatingMode opMode) {
+  if (opMode == OperatingMode::Soldering && pendingPWM >= TIP_MEASUREMENT_DUTY) {
+    // In soldering mode when the tip is actively heating do more frequent measurement
+    return TICKS_100MS * 5;
   }
+  return TICKS_SECOND;
+}
 
-  return TICKS_SECOND * 2;
+uint8_t getCurrentSamplingDuty(OperatingMode opMode) {
+  if (opMode == OperatingMode::Soldering || opMode == OperatingMode::DebugMenuReadout) {
+    return TIP_MEASUREMENT_DUTY; // More precise measurement
+  }
+  return 20; // 25/255 is ~8% duty. Enough for sensing if the tip is connected
 }
 
 // We may need to disable current sampling for some operating modes
-bool currentSamplingAllowed() {
-  switch (currentOperatingMode) {
+bool currentSamplingAllowed(OperatingMode opMode) {
+  switch (opMode) {
   case OperatingMode::Sleeping:
   case OperatingMode::Hibernating:
   case OperatingMode::ThermalRunaway:
@@ -182,11 +180,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     // increased safety
 
     uint32_t now                     = HAL_GetTick();
-    uint32_t currentSamplingInterval = getCurrentSamplingInterval();
+    uint32_t currentSamplingInterval = getCurrentSamplingInterval(currentOperatingMode);
 
-    if (currentSamplingAllowed() &&
+    if (currentSamplingAllowed(currentOperatingMode) &&
         (lastCurrentSamplingTick == 0 || (now - lastCurrentSamplingTick) > currentSamplingInterval)) {
-      pendingPWM = pendingPWM >= CURRENT_SAMPLE_PWM_DUTY ? pendingPWM : CURRENT_SAMPLE_PWM_DUTY;
+      uint8_t neededPWM = getCurrentSamplingDuty(currentOperatingMode);
+      pendingPWM        = pendingPWM >= neededPWM ? pendingPWM : neededPWM;
       __HAL_TIM_SET_COMPARE(&htimTip, TIM_CHANNEL_2, pendingPWM / 2);
       currentSamplingActive = true;
     } else {
